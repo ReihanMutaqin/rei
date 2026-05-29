@@ -1,7 +1,11 @@
 import { useRef, useEffect, useMemo } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Icosahedron } from '@react-three/drei';
 import * as THREE from 'three';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function OrganicMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -118,14 +122,15 @@ function OrganicMesh() {
 
         void main() {
           float distort = vDistortion * 3.0;
-          vec3 brightness = vec3(0.1, 0.05, 0.0);
-          vec3 contrast = vec3(0.3, 0.2, 0.1);
-          vec3 oscilation = vec3(0.5, 0.5, 0.5);
-          vec3 phase = vec3(0.0, 0.05, 0.1);
+          // Bright warm gold palette: higher brightness base
+          vec3 brightness = vec3(0.5, 0.35, 0.05);
+          vec3 contrast   = vec3(0.5, 0.4,  0.15);
+          vec3 oscilation = vec3(0.5, 0.5,  0.5);
+          vec3 phase      = vec3(0.0, 0.05, 0.1);
           vec3 color = cosPalette(distort, brightness, contrast, oscilation, phase);
-          gl_FragColor = vec4(color, vDistortion);
-          gl_FragColor += vec4(min(uDeepPurple, 1.0), 0.2, 0.5, 0.4);
-          gl_FragColor.rgb *= uOpacity;
+          // Blend in a warm gold tint
+          color += vec3(min(uDeepPurple, 1.0) * 0.15, 0.05, 0.0);
+          gl_FragColor = vec4(color, uOpacity);
         }
       `,
     }),
