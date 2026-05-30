@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import akuImg from '../image/aku.png';
 import gsap from 'gsap';
 
 export default function Hero() {
@@ -114,6 +115,42 @@ export default function Hero() {
   return (
     <section ref={heroRef} className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
       <canvas ref={canvasRef} className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }} />
+
+      {/* Ghost photo background */}
+      <div className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }}>
+        <img
+          src={akuImg}
+          alt=""
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            height: '95%',
+            width: 'auto',
+            objectFit: 'cover',
+            objectPosition: 'top center',
+            opacity: 0.08,
+            filter: 'grayscale(100%) brightness(1.4) contrast(1.1)',
+            mixBlendMode: 'luminosity',
+          }}
+        />
+        {/* Radial vignette — fades photo into black on all sides */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: [
+            'radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, #0a0a0a 80%)',
+          ].join(', '),
+        }} />
+        {/* Extra fade top & bottom */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 20%, transparent 80%, #0a0a0a 100%)',
+        }} />
+      </div>
+
       <div className="absolute inset-0 z-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212, 175, 55, 0.04) 0%, transparent 70%)' }} />
       <div className="relative z-10 text-center px-6">
         <h1 ref={titleRef} className="text-display-xl color-paper mb-6" style={{ fontWeight: 200 }}>

@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
+  { date: 'Nov 2025 – Present', role: 'Helpdesk Agent', company: 'PT Telkom Indonesia', description: 'Providing first-line technical support and customer service for Telkom\'s products and services. Handling incident tickets, troubleshooting network and service issues, and ensuring customer satisfaction through effective communication and problem resolution.' },
   { date: '2024 – Present', role: 'Freelance Developer', company: 'Self-Employed', description: 'Building games, AR experiences, and web applications for clients across education and entertainment sectors.' },
   { date: '2022 – 2024', role: 'Lead Developer', company: 'Himpunan Mahasiswa PTI', description: 'Led a 12-person technical team in developing educational software and organizing technology workshops for 200+ students.' },
   { date: '2020 – 2024', role: 'Computer Science Student', company: 'Universitas Bina Bangsa', description: 'Studied at Universitas Bina Bangsa with a focus on game development, graduating with a 3.96 GPA.' },
