@@ -46,8 +46,19 @@ export default function Contact() {
 
   return (
     <section className="relative w-full" style={{ paddingTop: '180px', paddingBottom: '180px', background: 'linear-gradient(to bottom, #0a0a0a 0%, #0e0c08 100%)' }}>
-      <div className="mx-auto px-6 text-center" style={{ maxWidth: '600px' }}>
-        <h2 ref={headingRef} className="text-display-xl color-paper mb-12" style={{ fontWeight: 200 }}>
+      <div className="mx-auto px-6 text-center" style={{ maxWidth: '900px', width: '100%' }}>
+        <h2
+          ref={headingRef}
+          className="color-paper mb-12"
+          style={{
+            fontWeight: 200,
+            fontSize: 'clamp(2.8rem, 10vw, 7rem)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
+            textTransform: 'uppercase',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {headingText.split('').map((char, i) => (
             <span key={i} className="char inline-block animate-fade-in-up" style={{ animationDelay: `${i * 0.02}s` }}>{char === ' ' ? '\u00A0' : char}</span>
           ))}

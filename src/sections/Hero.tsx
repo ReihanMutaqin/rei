@@ -165,7 +165,7 @@ export default function Hero() {
       <div ref={bottomRef} className="absolute bottom-8 left-0 right-0 z-10 px-8 flex justify-between items-center animate-fade-in-delay">
         <span className="text-label color-dim">Scroll to explore</span>
         <div className="absolute left-8 right-8 bottom-full mb-4" style={{ height: '1px', backgroundColor: 'rgba(240, 240, 240, 0.12)' }} />
-        <span className="text-label color-dim">2024</span>
+        <span className="text-label color-dim">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()}</span>
       </div>
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 animate-fade-in-delay">
         <div className="w-px h-12 relative overflow-hidden" style={{ backgroundColor: 'rgba(240, 240, 240, 0.06)' }}>
