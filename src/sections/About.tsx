@@ -2,16 +2,18 @@ import { useEffect, useRef } from 'react';
 import akuImg from '../image/aku.png';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { value: 8, suffix: '+', label: 'Projects Completed' },
-  { value: 3, suffix: '+', label: 'Years Freelancing' },
-  { value: 3.96, suffix: '', label: 'GPA', isDecimal: true },
+const statsTemplate = [
+  { value: 8, suffix: '+', key: 'projects' },
+  { value: 3, suffix: '+', key: 'years' },
+  { value: 3.96, suffix: '', key: 'gpa', isDecimal: true },
 ];
 
 export default function About() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -46,7 +48,7 @@ export default function About() {
       });
       statItems.forEach((item, index) => {
         const numberEl = item.querySelector('.stat-number');
-        const target = stats[index];
+        const target = statsTemplate[index];
         tl.fromTo(item, { opacity: 0, filter: 'blur(6px)', y: 20 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.8, ease: 'power2.out' }, 0.4 + index * 0.1);
         if (numberEl && target) {
           const obj = { val: 0 };
@@ -74,8 +76,8 @@ export default function About() {
     <section ref={sectionRef} className="relative w-full" style={{ paddingTop: '180px', paddingBottom: '180px', backgroundColor: '#0a0a0a' }}>
       <div className="mx-auto px-6" style={{ maxWidth: '1400px' }}>
         <h2 ref={headingRef} className="text-display-l color-paper mb-20">
-          <span className="word inline-block animate-blur-reveal">ABOUT</span>{' '}
-          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>ME</span>
+          <span className="word inline-block animate-blur-reveal">{t('about.label')}</span>{' '}
+          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>{t('about.title')}</span>
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           {/* Photo Column */}
@@ -129,19 +131,15 @@ export default function About() {
           {/* Text Column */}
           <div className="lg:col-span-4">
             <p ref={textRef} className="text-body-large color-dim animate-fade-in-up" style={{ lineHeight: 1.8 }}>
-              I'm a creative professional with a passion for building immersive digital experiences.
-              From educational games to augmented reality applications, I blend technical precision
-              with creative vision to craft tools that educate, engage, and inspire. With expertise
-              spanning Unity 3D, web development, and AR technologies, I bring ideas to life through
-              code and creativity.
+              {t('about.desc')}
             </p>
           </div>
           {/* Stats Column */}
           <div ref={statsRef} className="lg:col-span-4 flex flex-col gap-12">
-            {stats.map((stat, index) => (
+            {statsTemplate.map((stat, index) => (
               <div key={index} className="stat-item animate-fade-in-up" style={{ animationDelay: `${0.4 + index * 0.1}s` }}>
                 <div className="stat-number text-display-l color-gold mb-2" style={{ fontVariantNumeric: 'tabular-nums' }}>0</div>
-                <div className="text-label color-dim">{stat.label}</div>
+                <div className="text-label color-dim">{t(`about.stats.${stat.key}`)}</div>
               </div>
             ))}
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import akuImg from '../image/aku.png';
 import gsap from 'gsap';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -8,6 +9,8 @@ export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const { t } = useLanguage();
 
   useEffect(() => {
     // GSAP takes over CSS animations for smoother experience
@@ -159,11 +162,11 @@ export default function Hero() {
           <span className="word inline-block animate-hero-word-delay-1">MUTAQIN</span>
         </h1>
         <p ref={subtitleRef} className="text-body-large color-dim animate-fade-in-delay" style={{ letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.875rem', fontWeight: 500 }}>
-          App & Game Developer
+          {t('hero.role')}
         </p>
       </div>
       <div ref={bottomRef} className="absolute bottom-8 left-0 right-0 z-10 px-8 flex justify-between items-center animate-fade-in-delay">
-        <span className="text-label color-dim">Scroll to explore</span>
+        <span className="text-label color-dim">{t('hero.scroll')}</span>
         <div className="absolute left-8 right-8 bottom-full mb-4" style={{ height: '1px', backgroundColor: 'rgba(240, 240, 240, 0.12)' }} />
         <span className="text-label color-dim">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()}</span>
       </div>

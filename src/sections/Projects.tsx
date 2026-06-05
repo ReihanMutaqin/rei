@@ -1,19 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  { title: 'AR Book — Dasar Komputer', description: 'An Augmented Reality education application that brings computer basics to life through 3D interactive animations triggered by scanning physical textbook pages.', year: '2024', tags: ['AR', 'EDUCATION', 'UNITY'], image: '/images/project-ar-book.jpg' },
-  { title: 'Petualangan Barudak', description: 'An educational adventure game that introduces Indonesian geography and 3D geometry concepts through exploration, interactive quizzes, and real-world building visualizations.', year: '2024', tags: ['GAME', 'EDUCATION'], image: '/images/project-petualangan.jpg' },
-  { title: 'ReLive AR', description: 'An AR-based live photo application that transforms static images into interactive experiences using real-time 3D overlays and spatial tracking.', year: '2025', tags: ['AR', 'MOBILE'], image: '/images/project-relive.jpg' },
-  { title: 'Game Edukasi Penyusun Kata', description: 'An interactive word-building educational game where players arrange scrambled letters into correct Indonesian words based on visual clues and hints.', year: '2025', tags: ['GAME', 'EDUCATION'], image: '/images/project-wordgame.jpg' },
-  { title: '43 Berita Kita', description: 'A responsive news portal website with dynamic content management, category systems, and publication workflows — built as a platform for delivering local and general news.', year: '2024', tags: ['WEB', 'CMS'], image: '/images/project-berita.jpg' },
-  { title: 'E-Commerce Platform', description: 'A full-featured online shop system with product catalog, search, category filtering, shopping cart, checkout automation, and admin dashboard for inventory management.', year: '2023', tags: ['WEB', 'E-COMMERCE'], image: '/images/project-ecommerce.jpg' },
-];
-
-function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
+function ProjectCard({ project, index }: { project: { title: string, description: string, year: string, tags: string[], image: string }; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -55,6 +47,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 }
 
 export default function Projects() {
+  const { t } = useLanguage();
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -69,11 +62,11 @@ export default function Projects() {
     <section className="relative w-full" style={{ paddingTop: '180px', paddingBottom: '180px', backgroundColor: '#0a0a0a' }}>
       <div className="mx-auto px-6" style={{ maxWidth: '1400px' }}>
         <h2 ref={headingRef} className="text-display-l color-paper mb-20">
-          <span className="word inline-block animate-blur-reveal">SELECTED</span>{' '}
-          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>WORKS</span>
+          <span className="word inline-block animate-blur-reveal">{t('projects.label')}</span>{' '}
+          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>{t('projects.title')}</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {projects.map((project, index) => (
+          {(t('projects.items') as unknown as any[]).map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
           ))}
         </div>

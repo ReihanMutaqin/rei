@@ -1,17 +1,11 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const experiences = [
-  { date: 'Nov 2025 – Present', role: 'Helpdesk Agent', company: 'PT Telkom Indonesia', description: 'Providing first-line technical support and customer service for Telkom\'s products and services. Handling incident tickets, troubleshooting network and service issues, and ensuring customer satisfaction through effective communication and problem resolution.' },
-  { date: '2024 – Present', role: 'Freelance Developer', company: 'Self-Employed', description: 'Building games, AR experiences, and web applications for clients across education and entertainment sectors.' },
-  { date: '2022 – 2024', role: 'Lead Developer', company: 'Himpunan Mahasiswa PTI', description: 'Led a 12-person technical team in developing educational software and organizing technology workshops for 200+ students.' },
-  { date: '2020 – 2024', role: 'Computer Science Student', company: 'Universitas Bina Bangsa', description: 'Studied at Universitas Bina Bangsa with a focus on game development, graduating with a 3.96 GPA.' },
-];
-
-function TimelineItem({ exp, index }: { exp: (typeof experiences)[0]; index: number }) {
+function TimelineItem({ exp, index }: { exp: { date: string, role: string, company: string, description: string }; index: number }) {
   const itemRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,6 +81,7 @@ function TimelineItem({ exp, index }: { exp: (typeof experiences)[0]; index: num
 }
 
 export default function Experience() {
+  const { t } = useLanguage();
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -106,16 +101,16 @@ export default function Experience() {
       <div className="mx-auto px-6 relative z-10" style={{ maxWidth: '1000px' }}>
         <div className="flex items-center justify-center gap-4 mb-8">
           <span className="text-label color-dim" style={{ letterSpacing: '0.2em' }}>— 04</span>
-          <span className="text-label color-dim" style={{ letterSpacing: '0.15em' }}>PERJALANAN</span>
+          <span className="text-label color-dim" style={{ letterSpacing: '0.15em' }}>{t('experience.label')}</span>
         </div>
 
         <h2 ref={headingRef} className="text-display-l color-paper mb-24 text-center">
-          <span className="word inline-block animate-blur-reveal">THE</span>{' '}
-          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>PATH</span>
+          <span className="word inline-block animate-blur-reveal">{t('experience.title').split(' ')[0]}</span>{' '}
+          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>{t('experience.title').split(' ').slice(1).join(' ')}</span>
         </h2>
         
         <div className="flex flex-col gap-8">
-          {experiences.map((exp, index) => (
+          {(t('experience.items') as unknown as any[]).map((exp, index) => (
             <TimelineItem key={index} exp={exp} index={index} />
           ))}
         </div>

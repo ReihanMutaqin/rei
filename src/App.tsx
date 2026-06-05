@@ -10,11 +10,14 @@ import Contact from './sections/Contact';
 import Support from './sections/Support';
 import Footer from './sections/Footer';
 
+import { LanguageProvider } from './context/LanguageContext';
+
 function App() {
   useLenis();
 
   return (
-    <div className="relative" style={{ backgroundColor: '#0a0a0a' }}>
+    <LanguageProvider>
+      <div className="relative" style={{ backgroundColor: '#0a0a0a' }}>
       <Navigation />
       <Hero />
       <div id="about">
@@ -38,6 +41,7 @@ function App() {
       </div>
       <Footer />
     </div>
+    </LanguageProvider>
   );
 }
 

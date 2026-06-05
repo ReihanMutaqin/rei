@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import QRCode from 'qrcode';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,6 +81,7 @@ function formatRupiah(num: number): string {
 }
 
 export default function Support() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -108,7 +110,7 @@ export default function Support() {
       });
       setQrGenerated(true);
     } catch (err) {
-      setError('Gagal generate QR Code. Silakan coba lagi.');
+      setError(t('support.error') || 'Gagal generate QR Code. Silakan coba lagi.');
       console.error(err);
     } finally {
       setIsGenerating(false);
@@ -132,8 +134,8 @@ export default function Support() {
   };
 
   const handleGenerate = () => {
-    if (amount < 1000) { setError('Nominal minimum Rp 1.000'); return; }
-    if (amount > 50_000_000) { setError('Nominal maksimum Rp 50.000.000'); return; }
+    if (amount < 1000) { setError(t('support.minNominal')); return; }
+    if (amount > 50_000_000) { setError(t('support.maxNominal')); return; }
     setError('');
     generateQR(amount);
   };
@@ -173,7 +175,7 @@ export default function Support() {
     return () => { triggers.forEach((st) => st.kill()); };
   }, []);
 
-  const headingText = 'SUPPORT ME';
+  const headingText = t('support.title');
 
   return (
     <section
@@ -190,20 +192,19 @@ export default function Support() {
         {/* Section label */}
         <div className="flex items-center gap-4 mb-12">
           <span className="text-label color-dim" style={{ letterSpacing: '0.2em' }}>— 06</span>
-          <span className="text-label color-dim" style={{ letterSpacing: '0.15em' }}>DUKUNG KARYA</span>
+          <span className="text-label color-dim" style={{ letterSpacing: '0.15em' }}>{t('support.label')}</span>
         </div>
 
         {/* Heading */}
         <h2 ref={headingRef} className="color-paper mb-6 text-center" style={{ fontWeight: 200, fontSize: 'clamp(2.8rem, 10vw, 6.5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-          {headingText.split('').map((char, i) => (
+          {(headingText || '').split('').map((char: string, i: number) => (
             <span key={i} className="char inline-block">{char === ' ' ? '\u00A0' : char}</span>
           ))}
         </h2>
 
         {/* Description */}
         <p className="text-body color-dim text-center" style={{ maxWidth: '560px', margin: '0 auto 4rem auto', lineHeight: 1.8 }}>
-          Jika karya saya bermanfaat, kamu bisa memberikan dukungan melalui QRIS.
-          Masukkan nominal sesuai keikhlasanmu — setiap kontribusi sangat berarti.
+          {t('support.desc')}
         </p>
 
         {/* Main Card */}
@@ -225,7 +226,7 @@ export default function Support() {
 
               {/* Preset amounts */}
               <div className="mb-6">
-                <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>NOMINAL CEPAT</p>
+                <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>{t('support.presetTitle')}</p>
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
                   {PRESET_AMOUNTS.map((preset) => (
                     <button
@@ -250,7 +251,7 @@ export default function Support() {
 
               {/* Custom input */}
               <div className="mb-6">
-                <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>ATAU MASUKKAN NOMINAL</p>
+                <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>{t('support.customTitle')}</p>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 color-dim" style={{ fontSize: '0.875rem', fontWeight: 500 }}>Rp</span>
                   <input
@@ -274,11 +275,11 @@ export default function Support() {
                 onMouseEnter={(e) => { if (amount > 0) e.currentTarget.style.background = 'rgba(212,175,55,0.25)'; }}
                 onMouseLeave={(e) => { if (amount > 0) e.currentTarget.style.background = 'rgba(212,175,55,0.15)'; }}
               >
-                {isGenerating ? 'Membuat QR...' : 'Generate QRIS'}
+                {isGenerating ? t('support.btnGenerating') : t('support.btnGenerate')}
               </button>
 
               <p className="color-dim text-center mt-4" style={{ fontSize: '0.65rem', letterSpacing: '0.05em', lineHeight: 1.6 }}>
-                QR Dinamis · Berlaku sekali pakai · Semua metode pembayaran QRIS didukung
+                {t('support.note')}
               </p>
             </div>
 
@@ -300,7 +301,7 @@ export default function Support() {
                     {isGenerating ? (
                       <div style={{ textAlign: 'center' }}>
                         <div style={{ width: '40px', height: '40px', border: '2px solid rgba(212,175,55,0.2)', borderTopColor: '#d4af37', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
-                        <p className="text-label color-dim">Generating...</p>
+                        <p className="text-label color-dim">{t('support.btnGenerating')}</p>
                       </div>
                     ) : (
                       <div style={{ textAlign: 'center' }}>
@@ -311,8 +312,7 @@ export default function Support() {
                         </div>
                         <p className="text-label color-dim mb-2" style={{ letterSpacing: '0.1em' }}>QRIS DINAMIS</p>
                         <p className="color-dim" style={{ fontSize: '0.75rem', lineHeight: 1.5 }}>
-                          Pilih nominal dan klik<br />
-                          <span className="color-gold">Generate QRIS</span>
+                          <span className="color-gold">{t('support.btnGenerate')}</span>
                         </p>
                       </div>
                     )}
@@ -330,7 +330,7 @@ export default function Support() {
                     onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
                   >
                     <p className="color-paper" style={{ fontSize: '1.75rem', fontWeight: 300, letterSpacing: '-0.02em' }}>{formatRupiah(amount)}</p>
-                    <p className="text-label color-dim mt-1" style={{ letterSpacing: '0.1em' }}>{copied ? '✓ TERSALIN' : 'TAP UNTUK SALIN'}</p>
+                    <p className="text-label color-dim mt-1" style={{ letterSpacing: '0.1em' }}>{copied ? t('support.copied') : t('support.tapCopy')}</p>
                   </button>
                 </div>
               )}
@@ -343,26 +343,26 @@ export default function Support() {
                     style={{ padding: '0.625rem 1.25rem', border: '1px solid rgba(240,240,240,0.1)', background: 'transparent', color: 'rgba(240,240,240,0.45)', fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '2px', fontFamily: 'Outfit, sans-serif', transition: 'all 0.2s ease' }}
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(240,240,240,0.3)'; e.currentTarget.style.color = '#f0f0f0'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(240,240,240,0.1)'; e.currentTarget.style.color = 'rgba(240,240,240,0.45)'; }}
-                  >Reset</button>
+                  >{t('support.btnReset')}</button>
                   <button
                     onClick={handleDownload}
                     style={{ padding: '0.625rem 1.25rem', border: '1px solid rgba(212,175,55,0.4)', background: 'rgba(212,175,55,0.08)', color: '#d4af37', fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '2px', fontFamily: 'Outfit, sans-serif', transition: 'all 0.2s ease' }}
                     onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(212,175,55,0.18)'; e.currentTarget.style.borderColor = '#d4af37'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(212,175,55,0.08)'; e.currentTarget.style.borderColor = 'rgba(212,175,55,0.4)'; }}
-                  >Download QR</button>
+                  >{t('support.btnDownload')}</button>
                 </div>
               )}
 
               {/* Supported apps */}
               {!qrGenerated && (
                 <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                  <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>CARA BAYAR</p>
+                  <p className="text-label color-dim mb-3" style={{ letterSpacing: '0.12em' }}>{t('support.methodsTitle')}</p>
                   <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
                     {['GoPay', 'OVO', 'Dana', 'ShopeePay', 'BRI', 'BCA', 'Mandiri', 'BSI'].map((app) => (
                       <span key={app} className="text-label color-dim" style={{ fontSize: '0.6rem', letterSpacing: '0.08em' }}>{app}</span>
                     ))}
                   </div>
-                  <p className="color-dim mt-1" style={{ fontSize: '0.6rem', letterSpacing: '0.05em' }}>& semua aplikasi yang mendukung QRIS</p>
+                  <p className="color-dim mt-1" style={{ fontSize: '0.6rem', letterSpacing: '0.05em' }}>{t('support.methodsDesc')}</p>
                 </div>
               )}
             </div>
@@ -372,7 +372,7 @@ export default function Support() {
         </div>
 
         <p className="text-center color-dim mt-10" style={{ fontSize: '0.7rem', letterSpacing: '0.08em', lineHeight: 1.8 }}>
-          QRIS terverifikasi Bank Indonesia · Aman & terenkripsi · Satu QRIS untuk semua
+          {t('support.footerDesc')}
         </p>
       </div>
 

@@ -1,21 +1,11 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const skills = [
-  { name: 'Unity 3D', proficiency: 95 },
-  { name: 'C# Programming', proficiency: 90 },
-  { name: 'Augmented Reality', proficiency: 85 },
-  { name: 'Web Development', proficiency: 80 },
-  { name: 'Game Design', proficiency: 90 },
-  { name: 'UI/UX Design', proficiency: 75 },
-  { name: '3D Modeling', proficiency: 70 },
-  { name: 'Project Management', proficiency: 80 },
-];
-
-function SkillCard({ skill, index }: { skill: (typeof skills)[0]; index: number }) {
+function SkillCard({ skill, index }: { skill: { name: string, proficiency: number }; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +38,7 @@ function SkillCard({ skill, index }: { skill: (typeof skills)[0]; index: number 
 }
 
 export default function Skills() {
+  const { t } = useLanguage();
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -62,11 +53,11 @@ export default function Skills() {
     <section className="relative w-full" style={{ paddingTop: '180px', paddingBottom: '180px', backgroundColor: '#0a0a0a' }}>
       <div className="mx-auto px-6" style={{ maxWidth: '1400px' }}>
         <h2 ref={headingRef} className="text-display-l color-paper mb-20">
-          <span className="word inline-block animate-blur-reveal">THE</span>{' '}
-          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>ARSENAL</span>
+          <span className="word inline-block animate-blur-reveal">{t('skills.title').split(' ')[0]}</span>{' '}
+          <span className="word inline-block animate-blur-reveal" style={{ animationDelay: '0.03s' }}>{t('skills.title').split(' ').slice(1).join(' ')}</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {skills.map((skill, index) => (
+          {(t('skills.items') as unknown as any[]).map((skill, index) => (
             <SkillCard key={index} skill={skill} index={index} />
           ))}
         </div>

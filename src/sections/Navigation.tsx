@@ -1,17 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useLanguage } from '../context/LanguageContext';
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Works', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact', href: '#contact' },
-  { label: 'Support', href: '#support' },
+  { id: 'about', href: '#about' },
+  { id: 'works', href: '#projects' },
+  { id: 'skills', href: '#skills' },
+  { id: 'experience', href: '#experience' },
+  { id: 'contact', href: '#contact' },
+  { id: 'support', href: '#support' },
 ];
 
 export default function Navigation() {
   const navRef = useRef<HTMLElement>(null);
+  const { language, setLanguage, t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -82,7 +84,7 @@ export default function Navigation() {
               onClick={(e) => handleClick(e, item.href)}
               className="text-label color-dim transition-colors duration-300 hover:color-paper relative group"
             >
-              {item.label}
+              {t(`nav.${item.id}`)}
               <span
                 className="absolute -bottom-1 left-0 h-px bg-gold transition-all duration-300"
                 style={{
@@ -93,17 +95,25 @@ export default function Navigation() {
           ))}
         </div>
 
-        {/* CTA */}
-        <a
-          href="#contact"
-          onClick={(e) => handleClick(e, '#contact')}
-          className="text-label color-gold px-4 py-2 transition-all duration-300 hover:bg-gold hover:text-black"
-          style={{
-            border: '1px solid #d4af37',
-          }}
-        >
-          Hire Me
-        </a>
+        {/* CTA & Language Toggle */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setLanguage(language === 'en' ? 'id' : 'en')}
+            className="text-label color-dim transition-colors duration-300 hover:color-paper"
+            style={{ fontWeight: 500 }}
+          >
+            {language === 'en' ? 'ID' : 'EN'}
+          </button>
+          
+          <a
+            href="#contact"
+            onClick={(e) => handleClick(e, '#contact')}
+            className="text-label color-gold px-4 py-2 transition-all duration-300 hover:bg-gold hover:text-black"
+            style={{ border: '1px solid #d4af37' }}
+          >
+            {t('nav.hireMe')}
+          </a>
+        </div>
       </div>
     </nav>
   );

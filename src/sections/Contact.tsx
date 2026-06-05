@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
+  const { t } = useLanguage();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const emailRef = useRef<HTMLAnchorElement>(null);
@@ -42,7 +44,7 @@ export default function Contact() {
     return () => { triggers.forEach((st) => st.kill()); };
   }, []);
 
-  const headingText = "LET'S CONNECT";
+  const headingText = t('contact.title');
 
   return (
     <section className="relative w-full" style={{ paddingTop: '180px', paddingBottom: '180px', background: 'linear-gradient(to bottom, #0a0a0a 0%, #0e0c08 100%)' }}>
@@ -59,12 +61,12 @@ export default function Contact() {
             whiteSpace: 'nowrap',
           }}
         >
-          {headingText.split('').map((char, i) => (
+          {(headingText || '').split('').map((char: string, i: number) => (
             <span key={i} className="char inline-block animate-fade-in-up" style={{ animationDelay: `${i * 0.02}s` }}>{char === ' ' ? '\u00A0' : char}</span>
           ))}
         </h2>
         <p ref={textRef} className="text-body-large color-dim mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          Have a project in mind or want to collaborate? I'm always open to discussing new opportunities in game development, AR experiences, or web applications.
+          {t('contact.desc')}
         </p>
         <a ref={emailRef} href="mailto:reyhanmutakin1@gmail.com" className="text-display-l color-paper mb-12 inline-block relative group animate-fade-in-up" style={{ fontWeight: 300, animationDelay: '0.5s' }}>
           <span className="relative z-10 transition-colors duration-300 group-hover:color-gold">reyhanmutakin1@gmail.com</span>

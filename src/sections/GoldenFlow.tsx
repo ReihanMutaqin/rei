@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Icosahedron } from '@react-three/drei';
 import * as THREE from 'three';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -176,6 +177,7 @@ function OrganicMesh() {
 }
 
 export default function GoldenFlow() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
 
@@ -225,7 +227,7 @@ export default function GoldenFlow() {
         className="absolute inset-0 z-20 flex items-center justify-center text-display-l color-paper pointer-events-none opacity-0"
         style={{ opacity: 0.15 }}
       >
-        CREATING WORLDS
+        {t('goldenFlow.title')}
       </h2>
 
       {/* Three.js canvas */}
