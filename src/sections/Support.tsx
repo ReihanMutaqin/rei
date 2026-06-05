@@ -7,9 +7,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ─────────────────────────────────────────────
 // QRIS Dinamis Generator
-// Merchant : R.dir Store
-// NMID     : ID1025409810336
+// Sumber  : decoded langsung dari QR asli merchant
+// Merchant: R.dir Store  |  NMID: ID1025409810336
+// Acquirer: DANA (ID.DANA.WWW)
 // ─────────────────────────────────────────────
+
+/**
+ * QRIS statis asli yang di-decode dari gambar QR merchant.
+ * Field 01 = "11" (statis) → akan diubah ke "12" (dinamis).
+ * CRC lama dihapus dan dihitung ulang setelah modifikasi.
+ */
+const QRIS_STATIC_BASE =
+  '00020101021126570011ID.DANA.WWW011893600915392698070102099269807010303UMI51440014ID.CO.QRIS.WWW0215ID10254098103360303UMI5204737253033605802ID5911R.dir Store6015Kab. Pandeglang6105422726304';
 
 /**
  * Hitung CRC-16/CCITT-FALSE untuk string QRIS
@@ -28,64 +37,30 @@ function crc16(str: string): string {
 }
 
 /**
- * Buat TLV field: ID (2 digit) + Length (2 digit) + Value
- */
-function tlv(id: string, value: string): string {
-  return `${id}${String(value.length).padStart(2, '0')}${value}`;
-}
-
-/**
- * Generate QRIS string dinamis dengan nominal tertentu
- * Sesuai standar EMV-Co QRIS Bank Indonesia
- * Point of Initiation Method 12 = Dinamis (single-use)
+ * Generate QRIS Dinamis dari QRIS statis asli merchant.
+ * Langkah:
+ *  1. Ubah Point of Initiation Method: "010211" → "010212" (dinamis)
+ *  2. Sisipkan field 54 (nominal) sebelum "5802ID" (field 58 Country Code)
+ *  3. Hitung ulang CRC-16
  */
 function generateDynamicQRIS(amount: number): string {
-  // Field 00 - Payload Format Indicator
-  const f00 = tlv('00', '01');
+  // Hapus CRC placeholder lama (4 char terakhir)
+  const base = QRIS_STATIC_BASE.slice(0, -4);
 
-  // Field 01 - Point of Initiation Method: 12 = Dinamis
-  const f01 = tlv('01', '12');
+  // 1. Ubah mode statis (11) ke dinamis (12)
+  const withDynamic = base.replace('010211', '010212');
 
-  // Field 26 - Merchant Account Information (QRIS)
-  const merchantAccountInfo =
-    tlv('00', 'ID.CO.QRIS.WWW') +
-    tlv('01', 'ID1025409810336') +
-    tlv('02', 'QRIS');
-  const f26 = tlv('26', merchantAccountInfo);
+  // 2. Buat field 54 (Transaction Amount)
+  const amountStr = amount.toFixed(0);
+  const field54 = `54${String(amountStr.length).padStart(2, '0')}${amountStr}`;
 
-  // Field 52 - Merchant Category Code (5999 = Miscellaneous Retail)
-  const f52 = tlv('52', '5999');
+  // 3. Sisipkan field 54 tepat sebelum "5802ID" (field 58 = Country Code)
+  const withAmount = withDynamic.replace('5802ID', `${field54}5802ID`);
 
-  // Field 53 - Transaction Currency (360 = IDR)
-  const f53 = tlv('53', '360');
+  // 4. Hitung CRC baru
+  const crc = crc16(withAmount + '6304');
 
-  // Field 54 - Transaction Amount (nominal yang diinput user)
-  const f54 = tlv('54', amount.toFixed(0));
-
-  // Field 58 - Country Code
-  const f58 = tlv('58', 'ID');
-
-  // Field 59 - Merchant Name
-  const f59 = tlv('59', 'RDir Studio');
-
-  // Field 60 - Merchant City
-  const f60 = tlv('60', 'PANDEGLANG');
-
-  // Field 61 - Postal Code
-  const f61 = tlv('61', '42200');
-
-  // Field 62 - Additional Data Field
-  const additionalData = tlv('07', 'A01');
-  const f62 = tlv('62', additionalData);
-
-  // Gabungkan semua field (tanpa CRC)
-  const body = f00 + f01 + f26 + f52 + f53 + f54 + f58 + f59 + f60 + f61 + f62;
-
-  // Field 63 - CRC: ID + Length (selalu "6304") dihitung dari seluruh string termasuk "6304"
-  const crcInput = body + '6304';
-  const crc = crc16(crcInput);
-
-  return body + '6304' + crc;
+  return withAmount + '6304' + crc;
 }
 
 // ─────────────────────────────────────────────
