@@ -329,11 +329,8 @@ export default function Support() {
                     QRIS DINAMIS
                   </span>
                 </div>
-                <p className="color-paper" style={{ fontSize: '1.1rem', fontWeight: 400, marginBottom: '0.25rem' }}>
-                  REIHAN STORE ELEKTRONIK
-                </p>
-                <p className="text-label color-dim" style={{ letterSpacing: '0.08em' }}>
-                  NMID: ID1026524568080
+                <p className="color-paper" style={{ fontSize: '1.1rem', fontWeight: 400 }}>
+                  Reihan
                 </p>
               </div>
 
