@@ -7,6 +7,7 @@ import Projects from './sections/Projects';
 import Skills from './sections/Skills';
 import Experience from './sections/Experience';
 import Contact from './sections/Contact';
+import Support from './sections/Support';
 import Footer from './sections/Footer';
 
 function App() {
@@ -31,6 +32,9 @@ function App() {
       </div>
       <div id="contact">
         <Contact />
+      </div>
+      <div id="support">
+        <Support />
       </div>
       <Footer />
     </div>

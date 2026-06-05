@@ -7,6 +7,7 @@ const navItems = [
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Contact', href: '#contact' },
+  { label: 'Support', href: '#support' },
 ];
 
 export default function Navigation() {
