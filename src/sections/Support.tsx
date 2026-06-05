@@ -66,13 +66,13 @@ function generateDynamicQRIS(amount: number): string {
   const f58 = tlv('58', 'ID');
 
   // Field 59 - Merchant Name
-  const f59 = tlv('59', 'R.dir Store');
+  const f59 = tlv('59', 'RDir Studio');
 
   // Field 60 - Merchant City
-  const f60 = tlv('60', 'BANDUNG');
+  const f60 = tlv('60', 'PANDEGLANG');
 
   // Field 61 - Postal Code
-  const f61 = tlv('61', '40000');
+  const f61 = tlv('61', '42200');
 
   // Field 62 - Additional Data Field
   const additionalData = tlv('07', 'A01');
