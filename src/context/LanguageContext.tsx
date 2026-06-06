@@ -6,7 +6,7 @@ export type Language = 'en' | 'id';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string, namespace?: string) => any;
+  t: (key: string) => any;
 }
 
 const translations: any = {
@@ -255,17 +255,17 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('app_lang', lang);
   };
 
-  const t = (key: string, namespace: string = 'common'): any => {
+  const t = (key: string): any => {
     try {
       const keys = key.split('.');
-      let current: any = translations[language][namespace];
+      let current: any = translations[language];
       
       for (const k of keys) {
-        if (current[k] === undefined) {
+        if (current === undefined || current === null || current[k] === undefined) {
           // Fallback to English
-          let fallback = translations['en'][namespace];
+          let fallback: any = translations['en'];
           for (const fk of keys) {
-            if (fallback[fk] === undefined) return key;
+            if (fallback === undefined || fallback === null || fallback[fk] === undefined) return key;
             fallback = fallback[fk];
           }
           return fallback;

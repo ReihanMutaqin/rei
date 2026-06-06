@@ -54,11 +54,10 @@ export default function Contact() {
           className="color-paper mb-12"
           style={{
             fontWeight: 200,
-            fontSize: 'clamp(2.8rem, 10vw, 7rem)',
+            fontSize: 'clamp(2.2rem, 10vw, 7rem)',
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
             textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
           }}
         >
           {(headingText || '').split('').map((char: string, i: number) => (
@@ -68,7 +67,7 @@ export default function Contact() {
         <p ref={textRef} className="text-body-large color-dim mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
           {t('contact.desc')}
         </p>
-        <a ref={emailRef} href="mailto:reyhanmutakin1@gmail.com" className="text-display-l color-paper mb-12 inline-block relative group animate-fade-in-up" style={{ fontWeight: 300, animationDelay: '0.5s' }}>
+        <a ref={emailRef} href="mailto:reyhanmutakin1@gmail.com" className="color-paper mb-12 inline-block relative group animate-fade-in-up" style={{ fontWeight: 300, animationDelay: '0.5s', fontSize: 'clamp(1rem, 3.5vw, 2.5rem)', letterSpacing: '-0.02em', wordBreak: 'break-all' }}>
           <span className="relative z-10 transition-colors duration-300 group-hover:color-gold">reyhanmutakin1@gmail.com</span>
           <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px bg-gold transition-all duration-500 origin-center" style={{ width: '0%' }}
             ref={(el) => {
@@ -79,10 +78,22 @@ export default function Contact() {
               parent.addEventListener('mouseleave', () => { el.style.width = '0%'; });
             }} />
         </a>
-        <div ref={socialsRef} className="flex items-center justify-center gap-4">
-          {['GITHUB', 'LINKEDIN', 'INSTAGRAM'].map((name, i) => (
+        <div ref={socialsRef} className="flex items-center justify-center gap-4 flex-wrap">
+          {[
+            { name: 'GITHUB', href: 'https://github.com/ReihanMutaqin' },
+            { name: 'LINKEDIN', href: 'https://linkedin.com/in/reihanmutaqin' },
+            { name: 'INSTAGRAM', href: 'https://instagram.com/reyhanmutakin' },
+          ].map(({ name, href }, i) => (
             <span key={name} className="flex items-center gap-4">
-              <a href="#" className="text-label color-dim transition-colors duration-300 hover:color-paper animate-fade-in" style={{ animationDelay: `${0.7 + i * 0.1}s` }} onClick={(e) => e.preventDefault()}>{name}</a>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-label color-dim transition-colors duration-300 hover:color-paper animate-fade-in"
+                style={{ animationDelay: `${0.7 + i * 0.1}s` }}
+              >
+                {name}
+              </a>
               {i < 2 && <span className="color-dim">·</span>}
             </span>
           ))}

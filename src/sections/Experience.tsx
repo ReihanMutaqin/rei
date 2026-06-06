@@ -34,11 +34,11 @@ function TimelineItem({ exp, index }: { exp: { date: string, role: string, compa
         
         {/* Glowing Dot */}
         <div 
-          className="timeline-dot absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full animate-scale-in transition-all duration-500 group-hover:scale-125" 
+          className="timeline-dot absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full transition-all duration-500 group-hover:scale-125" 
           style={{ 
-            top: '32px', // Align with p-8 padding
+            top: '32px',
             backgroundColor: '#d4af37', 
-            transform: 'translate(-50%, 0) scale(0)', 
+            transform: 'translateX(-50%) scale(0)', 
             animationDelay: `${0.1 + index * 0.2}s`,
             boxShadow: '0 0 10px rgba(212,175,55,0.4)'
           }} 
