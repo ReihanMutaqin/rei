@@ -6,7 +6,7 @@ import GoldenFlow from './sections/GoldenFlow';
 import Projects from './sections/Projects';
 import Skills from './sections/Skills';
 import Experience from './sections/Experience';
-import Testimonials from './sections/Testimonials';
+// import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 import Support from './sections/Support';
 import Footer from './sections/Footer';
@@ -42,9 +42,9 @@ function App() {
         <div id="experience">
           <Experience />
         </div>
-        <div id="testimonials">
+        {/* <div id="testimonials">
           <Testimonials />
-        </div>
+        </div> */}
         <div id="contact">
           <Contact />
         </div>
