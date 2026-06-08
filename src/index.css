@@ -37,6 +37,11 @@
     background-color: #0a0a0a;
     color: #f0f0f0;
     overflow-x: hidden;
+    cursor: none;
+  }
+
+  a, button, [role="button"], input, select, textarea {
+    cursor: none;
   }
 
   ::selection {
@@ -126,6 +131,14 @@
 
   .border-faint {
     border-color: rgba(240, 240, 240, 0.12);
+  }
+
+  .bg-gold {
+    background-color: #d4af37;
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   }
 }
 

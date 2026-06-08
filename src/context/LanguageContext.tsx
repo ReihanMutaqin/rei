@@ -16,6 +16,7 @@ const translations: any = {
       works: 'Works',
       skills: 'Skills',
       experience: 'Experience',
+      reviews: 'Reviews',
       contact: 'Contact',
       support: 'Support',
       hireMe: 'Hire Me'
@@ -116,6 +117,7 @@ const translations: any = {
       works: 'Karya',
       skills: 'Keahlian',
       experience: 'Pengalaman',
+      reviews: 'Ulasan',
       contact: 'Kontak',
       support: 'Dukungan',
       hireMe: 'Pekerjakan'
